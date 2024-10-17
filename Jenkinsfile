@@ -1,29 +1,18 @@
- 
 pipeline {
     agent any
+    triggers {
+        cron('H/10 * * * 1')  
+    }
     stages {
         stage('Build') {
             steps {
-                script {
-                    // Run the build
-                    sh './mvnw clean package'
-                }
+               
+                bat './mvnw clean package'
             }
         }
-        stage('Test') {
+        stage('Test and Code Coverage') {
             steps {
-                script {
-                    // Run tests and generate code coverage report with JaCoCo
-                    sh './mvnw test'
-                }
-            }
-        }
-        stage('Code Coverage') {
-            steps {
-                script {
-                    // Generate code coverage report
-                    sh './mvnw jacoco:report'
-                }
+                bat './mvnw test jacoco:report'
             }
         }
     }
